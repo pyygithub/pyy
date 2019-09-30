@@ -27,7 +27,7 @@
             <el-input v-model="tableModel.name" :readonly="true" style="width: 260px !important;"></el-input>
           </el-form-item>
           <el-form-item label="类名">
-            <el-input v-model="tableModel.className" ></el-input>
+            <el-input v-model="tableModel.className" style="width: 220px !important;"></el-input>
           </el-form-item>
           <el-form-item label="描述">
             <el-input v-model="tableModel.description"></el-input>
@@ -35,7 +35,7 @@
         </el-form>
       </div>
       <div class="column-info">
-        <el-table :data="tableModel.columns" class="right-table" size="mini" height="375" max-height="375" border>
+        <el-table :data="tableModel.columns" class="right-table" size="mini" height="500" max-height="500" border>
           <el-table-column prop="name" label="" width="32">
             <template slot-scope="scope">
               <span v-if="scope.row.primaryKey">
