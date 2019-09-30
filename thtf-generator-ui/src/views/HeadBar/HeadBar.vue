@@ -53,7 +53,7 @@ export default {
   data() {
     return {
       username: "admin",
-      userAvatar: "http://139.196.87.48:9002/kitty/static/img/user.82ce3c3.png",
+      userAvatar: "https://upload.jianshu.io/users/upload_avatars/11464886/040c7dc1-b611-4b59-9af1-a42b3cf74e8d.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/240/h/240",
       activeIndex: '1',
       datasourceDialogVisible: false
     }
