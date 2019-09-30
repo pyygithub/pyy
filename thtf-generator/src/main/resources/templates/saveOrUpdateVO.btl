@@ -1,0 +1,29 @@
+package ${table.modelPackageName};
+
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+
+/**
+ * ---------------------------
+ * ${table.description} (${table.className})         
+ * ---------------------------
+ * 作者：  ${table.author}
+ * 时间：  ${strutil.formatDate(date(),'yyyy-MM-dd HH:mm:ss')}
+ * 版本：  v1.0
+ * ---------------------------
+ */
+@Data
+@ApiModel(value = "${table.className}",description = "${table.description}保存和修改VO类")
+public class ${table.className}SaveOrUpdateVO {
+
+<%
+	for(column in table.columns) {
+%>
+	@ApiModelProperty("${column.description}")
+	private ${column.javaType} ${column.fieldName};
+<%
+	}
+%>
+
+}

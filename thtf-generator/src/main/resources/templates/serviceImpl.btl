@@ -1,0 +1,163 @@
+package ${table.serviceImplPackageName};
+
+import com.alibaba.fastjson.JSON;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
+import tk.mybatis.mapper.entity.Example;
+
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+
+import ${table.modelPackageName}.*;
+import ${table.voPackageName}.*;
+import ${table.daoPackageName}.${table.className}Mapper;
+
+/**
+ * ---------------------------
+ * ${table.description} (${table.className}ServiceImpl)         
+ * ---------------------------
+ * 作者：  ${table.author}
+ * 时间：  ${strutil.formatDate(date(),'yyyy-MM-dd HH:mm:ss')}
+ * 版本：  v1.0
+ * ---------------------------
+ */
+@Slf4j
+@Service
+@Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.DEFAULT,timeout=36000,rollbackFor=Exception.class)
+public class ${table.className}ServiceImpl implements ${table.className}Service {
+
+	@Autowired
+	private ${table.className}Mapper ${table.objectName}Mapper;
+
+    /**
+     * ${table.description}保存
+     *
+     * @param ${table.className}SaveOrUpdateVO
+     */
+	@Override
+	public void save(${table.className}SaveOrUpdateVO ${table.objectName}SaveOrUpdateVO) {
+        // 保存${table.description}
+        ${table.className} ${table.objectName}Model = new ${table.className}();
+        BeanUtils.copyProperties(${table.objectName}SaveOrUpdateVO, ${table.objectName}Model);
+        ${table.objectName}Model.setId(SnowflakeId.getId() + "");
+        ${table.objectName}Model.setCreateId(UserUtil.getUserId());
+        ${table.objectName}Model.setCreateName(UserUtil.getUsername());
+        ${table.objectName}Model.setCreateTime(new Timestamp(System.currentTimeMillis()));
+        ${table.objectName}Model.setDeleteFlag(Constants.UN_DELETED);
+
+        ${table.objectName}Mapper.insert(${table.objectName}Model);
+        log.info("### ${table.description}保存成功 ###");
+	}
+
+	/**
+     * ${table.description}修改
+     *
+     * @param id
+     * @param ${table.className}SaveOrUpdateVO
+     */
+    @Override
+    public void update(${table.primaryKey.javaType} id, ${table.className}SaveOrUpdateVO ${table.objectName}SaveOrUpdateVO) {
+        ${table.className} ${table.objectName}Model = ${table.objectName}Mapper.selectByPrimaryKey(id);
+        if (${table.objectName}Model == null) {
+            throw new CustomException(ResultCode.RESULT_DATA_NONE, "${table.description}");
+        }
+
+        // 修改
+        BeanUtils.copyProperties(${table.objectName}SaveOrUpdateVO, ${table.objectName}Model);
+        ${table.objectName}Model.setUpdateId(UserUtil.getUserId());
+        ${table.objectName}Model.setUpdateName(UserUtil.getUsername());
+        ${table.objectName}Model.setUpdateTime(new Timestamp(System.currentTimeMillis()));
+
+        ${table.objectName}Mapper.updateByPrimaryKey(${table.objectName}Model);
+        log.info("### ${table.description}修改成功 ###");
+    }
+
+   /**
+    * ${table.description}删除
+    *
+    * @param id
+    */
+	@Override
+	public void delete(${table.primaryKey.javaType} id) {
+	    ${table.className} ${table.objectName}Model = ${table.objectName}Mapper.selectByPrimaryKey(id);
+        if (${table.objectName}Model == null) {
+            throw new CustomException(ResultCode.RESULT_DATA_NONE, "${table.description},id=" + id);
+        }
+
+		// 逻辑删除
+        ${table.className} ${table.objectName}Model = new ${table.className}();
+        ${table.objectName}Model.setId(id);
+        ${table.objectName}Model.setUpdateId(UserUtil.getUserId());
+        ${table.objectName}Model.setUpdateName(UserUtil.getUsername());
+        ${table.objectName}Model.setUpdateTime(new Timestamp(System.currentTimeMillis()));
+        ${table.objectName}Model.setDeleteFlag(Constants.DELETED);
+
+        ${table.objectName}Mapper.updateByPrimaryKeySelective(${table.objectName}Model);
+        log.info("### ${table.description}逻辑删除成功 ###");
+	}
+
+   /**
+    * 根据${table.description}ID查询
+    *
+    * @param id
+    */
+	@Override
+	public ${table.className}VO findById(${table.primaryKey.javaType} id) {
+		${table.className} ${table.objectName}Model = ${table.objectName}Mapper.selectByPrimaryKey(id);
+		if (${table.objectName}Model == null) {
+            throw new CustomException(ResultCode.RESULT_DATA_NONE, "${table.description},id=" + id);
+        }
+        log.info("### ${table.description}查询成功, ${table.objectName}={}###", JSON.toJSONString(${table.objectName}));
+        // model转换vo
+        ${table.className}VO ${table.objectName}VO = new ${table.className}();
+        BeanUtils.copyProperties(${table.objectName}Model, ${table.objectName}VO);
+        log.info("### ${table.description}Model转换VO成功， ${table.objectName}VO={}###", ${table.objectName}VO);
+        return ${table.objectName}VO;
+	}
+
+    /**
+     * ${table.description}分页模糊查询
+     * @param queryConditionVO
+     * @param page
+     * @param size
+     * @return
+     */
+	@Override
+    public QueryResult<${table.className}VO> listByPageAndParam(${table.className}QueryConditionVO queryConditionVO, Integer page, Integer size) {
+        // 分页查询
+        page = page == null || page <= 0 ? 1 : page;
+        size = size == null || size <= 0 ? 10 : size;
+        PageHelper.startPage(page, size);
+        List<${table.className}> ${table.objectName}List = ${table.objectName}Mapper.selectByPageAndParam(queryConditionVO);
+        // 获取分页后数据
+        PageInfo<${table.className}> pageInfo = new PageInfo<>(${table.objectName}List);
+        log.info("### ${table.description}分页查询完毕,总条数：{} ###", pageInfo.getTotal());
+
+        List<${table.className}VO> ${table.objectName}VOList = new ArrayList<>();
+        // 补全数据
+        ${table.objectName}List.forEach(${table.objectName} -> {
+            ${table.className}VO ${table.objectName}VO = new ${table.className}VO();
+            BeanUtils.copyProperties(${table.objectName}, ${table.objectName}VO);
+            ${table.objectName}VOList.add(${table.objectName}VO);
+        });
+        log.info("### ${table.description}Model转换VO数据完毕###");
+
+        // 封装需要返回的实体数据
+        QueryResult queryResult = new QueryResult();
+        queryResult.setTotal(pageInfo.getTotal());
+        queryResult.setList(${table.objectName}VOList);
+
+        return queryResult;
+    }
+}

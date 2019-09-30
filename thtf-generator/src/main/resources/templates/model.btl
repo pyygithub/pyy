@@ -1,0 +1,40 @@
+package ${table.modelPackageName};
+
+import lombok.Data;
+
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+/**
+ * ---------------------------
+ * ${table.description} (${table.className})         
+ * ---------------------------
+ * 作者：  ${table.author}
+ * 时间：  ${strutil.formatDate(date(),'yyyy-MM-dd HH:mm:ss')}
+ * 版本：  v1.0
+ * ---------------------------
+ */
+@Data
+@Table(name = "${table.name}")
+public class ${table.className} {
+
+<%
+	for(column in table.columns) {
+
+	if (column.isPrimaryKey) {
+%>
+	/** ${column.description} */
+	@Id
+	private ${column.javaType} ${column.fieldName};
+<%
+	} else {
+%>
+	/** ${column.description} */
+	private ${column.javaType} ${column.fieldName};
+<%
+	}
+
+	}
+%>
+
+}

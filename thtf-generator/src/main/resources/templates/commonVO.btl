@@ -1,0 +1,40 @@
+package ${table.modelPackageName};
+
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+
+import java.util.Date;
+
+/**
+ * ---------------------------
+ * 公共VO字段
+ * ---------------------------
+ * 作者：  ${table.author}
+ * 时间：  ${strutil.formatDate(date(),'yyyy-MM-dd HH:mm:ss')}
+ * 版本：  v1.0
+ * ---------------------------
+ */
+@Data
+public class CommonVO {
+
+    @ApiModelProperty("创建人ID")
+    private String createId;
+
+    @ApiModelProperty("创建人名称")
+    private String createName;
+
+    @ApiModelProperty("创建时间")
+    private Date createTime;
+
+    @ApiModelProperty("修改人ID")
+    private String updateId;
+
+    @ApiModelProperty("修改人名称")
+    private String updateName;
+
+    @ApiModelProperty("修改时间")
+    private Date updateTime;
+
+    @ApiModelProperty("删除标记")
+    private String deleteFlag;
+}

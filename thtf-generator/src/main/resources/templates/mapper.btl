@@ -1,0 +1,22 @@
+package ${table.daoPackageName};
+
+import java.util.List;
+
+import ${table.modelPackageName}.${table.className};
+import tk.mybatis.mapper.common.Mapper;
+import ${table.voPackageName}.*;
+import ${table.modelPackageName}.*;
+
+/**
+ * ---------------------------
+ * ${table.description} (${table.className}Mapper)         
+ * ---------------------------
+ * 作者：  ${table.author}
+ * 时间：  ${strutil.formatDate(date(),'yyyy-MM-dd HH:mm:ss')}
+ * 版本：  v1.0
+ * ---------------------------
+ */
+public interface ${table.className}Mapper extends Mapper<${table.className}>{
+
+    List<${table.className}> selectByPageAndParam(${table.className}QueryConditionVO queryConditionVO);
+}

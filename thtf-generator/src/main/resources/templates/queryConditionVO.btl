@@ -1,0 +1,23 @@
+package ${table.modelPackageName};
+
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+
+import java.util.Date;
+
+/**
+ * ---------------------------
+ * 模糊查询条件VO
+ * ---------------------------
+ * 作者：  ${table.author}
+ * 时间：  ${strutil.formatDate(date(),'yyyy-MM-dd HH:mm:ss')}
+ * 版本：  v1.0
+ * ---------------------------
+ */
+@Data
+public class ${table.className}QueryConditionVO {
+
+    @ApiModelProperty("名称")
+    private String name;
+
+}
