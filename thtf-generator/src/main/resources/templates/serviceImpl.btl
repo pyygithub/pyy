@@ -42,7 +42,6 @@ public class ${table.className}ServiceImpl implements ${table.className}Service 
 
     /**
      * ${table.description}保存
-     *
      * @param ${table.className}SaveOrUpdateVO
      */
 	@Override
@@ -62,7 +61,6 @@ public class ${table.className}ServiceImpl implements ${table.className}Service 
 
 	/**
      * ${table.description}修改
-     *
      * @param id
      * @param ${table.className}SaveOrUpdateVO
      */
@@ -85,7 +83,6 @@ public class ${table.className}ServiceImpl implements ${table.className}Service 
 
    /**
     * ${table.description}删除
-    *
     * @param id
     */
 	@Override
@@ -109,7 +106,6 @@ public class ${table.className}ServiceImpl implements ${table.className}Service 
 
    /**
     * 根据${table.description}ID查询
-    *
     * @param id
     */
 	@Override
@@ -126,6 +122,28 @@ public class ${table.className}ServiceImpl implements ${table.className}Service 
         return ${table.objectName}VO;
 	}
 
+  /**
+     * ${table.description}模糊查询
+     * @param queryConditionVO
+     * @return
+     */
+    @Override
+    public List<${table.className}VO> listByParams(${table.className}QueryConditionVO queryConditionVO) {
+        List<${table.className}> ${table.objectName}List = ${table.objectName}Mapper.selectByPageAndParam(queryConditionVO);
+        log.info("### ${table.description}Model模糊查询完毕，总条数：{}条###", ${table.objectName}List.size());
+
+        // ${table.description}Model转换VO数据完毕
+        List<${table.className}VO> ${table.objectName}VOList = new ArrayList<>();
+        ${table.objectName}List.forEach(${table.objectName} -> {
+            ${table.className}VO ${table.objectName}VO = new ${table.className}VO();
+            BeanUtils.copyProperties(${table.objectName}, ${table.objectName}VO);
+            ${table.objectName}VOList.add(${table.objectName}VO);
+        });
+        log.info("### ${table.description}Model转换VO数据完毕###");
+
+        return ${table.objectName}VOList;
+    }
+
     /**
      * ${table.description}分页模糊查询
      * @param queryConditionVO
@@ -134,7 +152,7 @@ public class ${table.className}ServiceImpl implements ${table.className}Service 
      * @return
      */
 	@Override
-    public QueryResult<${table.className}VO> listByPageAndParam(${table.className}QueryConditionVO queryConditionVO, Integer page, Integer size) {
+    public QueryResult<${table.className}VO> listByPageAndParams(${table.className}QueryConditionVO queryConditionVO, Integer page, Integer size) {
         // 分页查询
         page = page == null || page <= 0 ? 1 : page;
         size = size == null || size <= 0 ? 10 : size;

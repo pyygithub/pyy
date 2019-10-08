@@ -43,10 +43,8 @@ public class ${table.className}Controller {
      * @param record
      * @return
      */
-    @ApiOperation(value = "保存${table.description}", notes = "保存${table.description}接口")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "record", value = "${table.description}对象", required = true, dataType = "${table.className}", paramType = "body")
-    })
+    @ApiOperation(value = "保存${table.description}", notes = "创建新${table.description}")
+    @ApiImplicitParam(name = "record", value = "${table.description}对象", required = true, dataType = "${table.className}", paramType = "body")
     @PostMapping("/${table.objectName}")
     public Result save(@Valid @RequestBody ${table.className}SaveOrUpdateVO record) {
         ${table.objectName}Service.save(record);
@@ -59,7 +57,7 @@ public class ${table.className}Controller {
      * @param record
      * @return
      */
-    @ApiOperation(value = "修改${table.description}", notes = "修改${table.description}接口")
+    @ApiOperation(value = "修改${table.description}", notes = "根据ID修改${table.description}")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "${table.description}ID", required = true, dataType = "String", paramType = "path"),
             @ApiImplicitParam(name = "record", value = "${table.description}对象", required = true, dataType = "${table.className}", paramType = "body")
@@ -75,10 +73,8 @@ public class ${table.className}Controller {
      * @param id
      * @return
      */
-	@ApiOperation(value = "修改${table.description}", notes = "修改${table.description}接口")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", value = "${table.description}ID", required = true, dataType = "String", paramType = "path")
-    })
+	@ApiOperation(value = "删除${table.description}", notes = "根据ID${table.description}")
+    @ApiImplicitParam(name = "id", value = "${table.description}ID", required = true, dataType = "String", paramType = "path")
     @DeleteMapping("/${table.objectName}/{id}")
     public Result delete(@Valid @PathVariable(value = "id") String id) {
         ${table.objectName}Service.delete(id);
@@ -86,33 +82,47 @@ public class ${table.className}Controller {
     }
 
     /**
-     * 根据主键查询
+     * 根据ID查询${table.description}
      * @param ${table.primaryKey.fieldName}
      * @return
      */
+    @ApiOperation(value = "${table.description}查询", notes = "根据ID${table.description}查询")
+    @ApiImplicitParam(name = "id", value = "${table.description}ID", required = true, dataType = "String", paramType = "path")
     @GetMapping("/${table.objectName}")
     public Result<${table.className}VO> findById(@Valid @PathVariable(value = "id") String id) {
         ${table.className}VO queryResult = ${table.objectName}Service.findById(id);
         return Result.SUCCESS(queryResult);
     }
 
+    /**
+     * ${table.description}模糊查询
+     * @param queryConditionVO
+     * @return
+     */
+    @ApiOperation(value = "${table.description}模糊查询", notes = "${table.description}不带分页模糊查询")
+    @GetMapping("/${table.objectName}s")
+    public Result<List<${table.className}VO>> listByParams(${table.className}QueryConditionVO queryConditionVO) {
+        List<${table.className}VO> queryResult = ${table.objectName}Service.listByParams(queryConditionVO);
+        return Result.SUCCESS(queryResult);
+    }
 
     /**
      * ${table.description}分页模糊查询
+     * @param queryConditionVO
      * @param page
      * @param size
      * @return
      */
-    @ApiOperation(value = "外部数据源分页列表查询", notes = "外部数据源分页列表查询接口")
+    @ApiOperation(value = "${table.description}分页查询", notes = "${table.description}分页模糊查询")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "page", value = "当前页码", required = true, dataType = "int", paramType = "query"),
             @ApiImplicitParam(name = "size", value = "分页尺寸", required = true, dataType = "int", paramType = "query")
     })
     @GetMapping("/${table.objectName}s/page")
-    public Result<QueryResult<${table.className}VO>> listByPageAndParam(${table.className}QueryConditionVO queryConditionVO,
+    public Result<QueryResult<${table.className}VO>> listByPageAndParams(${table.className}QueryConditionVO queryConditionVO,
                                      @RequestParam("page") Integer page,
                                      @RequestParam("size") Integer size) {
-        QueryResult<${table.className}VO> queryResult = labelService.listByPageAndParam(queryConditionVO, page, size);
+        QueryResult<${table.className}VO> queryResult = ${table.objectName}Service.listByPageAndParams(queryConditionVO, page, size);
         return Result.SUCCESS(queryResult);
     }
 	

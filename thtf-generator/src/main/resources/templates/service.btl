@@ -13,16 +13,15 @@ import com.louis.kitty.core.service.CurdService;
  * ---------------------------
  */
 public interface ${table.className}Service {
+
     /**
      * ${table.description}保存
-     *
      * @param ${table.className}SaveOrUpdateVO
      */
 	public void save(${table.className}SaveOrUpdateVO ${table.objectName}SaveOrUpdateVO);
 
 	/**
      * ${table.description}修改
-     *
      * @param id
      * @param ${table.className}SaveOrUpdateVO
      */
@@ -30,17 +29,23 @@ public interface ${table.className}Service {
 
     /**
      * ${table.description}删除
-     *
      * @param id
      */
 	public void delete(${table.primaryKey.javaType} id);
 
     /**
      * 根据${table.description}ID查询
-     *
      * @param id
      */
 	public ${table.className}VO findById(${table.primaryKey.javaType} id);
+
+    /**
+     * ${table.description}模糊查询
+     * @param queryConditionVO
+     * @return
+     */
+    public List<${table.className}VO> listByParams(${table.className}QueryConditionVO queryConditionVO);
+
 
     /**
      * ${table.description}分页模糊查询
@@ -49,5 +54,5 @@ public interface ${table.className}Service {
      * @param size
      * @return
      */
-    public QueryResult<${table.className}VO> listByPageAndParam(${table.className}QueryConditionVO queryConditionVO, Integer page, Integer size);
+    public QueryResult<${table.className}VO> listByPageAndParams(${table.className}QueryConditionVO queryConditionVO, Integer page, Integer size);
 }
