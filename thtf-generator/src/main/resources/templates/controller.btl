@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.louis.kitty.core.http.HttpResult;
 import com.louis.kitty.core.page.PageRequest;
+import org.springframework.http.MediaType;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -30,9 +31,9 @@ import ${table.servicePackageName}.${table.className}Service;
  * 版本：  v1.0
  * ---------------------------
  */
-@Api(value = "${table.className}Controller", description = "${table.description}相关接口")
+@Api(tags = "${table.className}Controller", description = "${table.description}相关接口")
 @RestController
-@RequestMapping("/v1")
+@RequestMapping(value = "/v1", produces = MediaType.APPLICATION_JSON_UTF8_VALUE )
 public class ${table.className}Controller {
 
 	@Autowired
