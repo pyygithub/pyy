@@ -1,7 +1,6 @@
 package ${table.servicePackageName};
 
 import ${table.modelPackageName}.${table.className};
-import com.louis.kitty.core.service.CurdService;
 
 /**
  * ---------------------------
@@ -16,22 +15,24 @@ public interface ${table.className}Service {
 
     /**
      * ${table.description}保存
-     * @param ${table.className}SaveOrUpdateVO
+     * @param ${table.objectName}SaveOrUpdateVO
      */
 	public void save(${table.className}SaveOrUpdateVO ${table.objectName}SaveOrUpdateVO);
 
 	/**
      * ${table.description}修改
      * @param id
-     * @param ${table.className}SaveOrUpdateVO
+     * @param ${table.objectName}SaveOrUpdateVO
      */
     public void update(${table.primaryKey.javaType} id, ${table.className}SaveOrUpdateVO ${table.objectName}SaveOrUpdateVO);
 
     /**
      * ${table.description}删除
      * @param id
+     * @param userId
+     * @param username
      */
-	public void delete(${table.primaryKey.javaType} id);
+	public void delete(${table.primaryKey.javaType} id, String userId, String username);
 
     /**
      * 根据${table.description}ID查询

@@ -14,7 +14,7 @@ import lombok.Data;
  * ---------------------------
  */
 @Data
-@ApiModel(value = "${table.className}",description = "${table.description}保存和修改VO类")
+@ApiModel(value = "${table.className}SaveOrUpdateVO",description = "${table.description}保存和修改VO类")
 public class ${table.className}SaveOrUpdateVO {
 
 <%

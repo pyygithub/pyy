@@ -15,6 +15,7 @@ import java.util.Date;
  * ---------------------------
  */
 @Data
+@ApiModel(value = "CommonVO",description = "通用VO类")
 public class CommonVO {
 
     @ApiModelProperty("创建人ID")
@@ -35,6 +36,6 @@ public class CommonVO {
     @ApiModelProperty("修改时间")
     private Date updateTime;
 
-    @ApiModelProperty("删除标记")
-    private String deleteFlag;
+    @ApiModelProperty("删除标记： 1删除 0未删除")
+    private Integer  isDeleted;
 }

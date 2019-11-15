@@ -42,7 +42,7 @@ public class ${table.className}ServiceImpl implements ${table.className}Service 
 
     /**
      * ${table.description}保存
-     * @param ${table.className}SaveOrUpdateVO
+     * @param ${table.objectName}SaveOrUpdateVO
      */
 	@Override
 	public void save(${table.className}SaveOrUpdateVO ${table.objectName}SaveOrUpdateVO) {
@@ -62,21 +62,23 @@ public class ${table.className}ServiceImpl implements ${table.className}Service 
 	/**
      * ${table.description}修改
      * @param id
-     * @param ${table.className}SaveOrUpdateVO
+     * @param ${table.objectName}SaveOrUpdateVO
      */
     @Override
     public void update(${table.primaryKey.javaType} id, ${table.className}SaveOrUpdateVO ${table.objectName}SaveOrUpdateVO) {
+        // 1.根据ID查询${table.description}
         ${table.className} ${table.objectName}Model = ${table.objectName}Mapper.selectByPrimaryKey(id);
         if (${table.objectName}Model == null) {
             throw new CustomException(ResultCode.RESULT_DATA_NONE, "${table.description}");
         }
 
-        // 修改
+        // 2.设置${table.description}属性
         BeanUtils.copyProperties(${table.objectName}SaveOrUpdateVO, ${table.objectName}Model);
         ${table.objectName}Model.setUpdateId(UserUtil.getUserId());
         ${table.objectName}Model.setUpdateName(UserUtil.getUsername());
         ${table.objectName}Model.setUpdateTime(new Timestamp(System.currentTimeMillis()));
 
+        // 3.更新${table.description}
         ${table.objectName}Mapper.updateByPrimaryKey(${table.objectName}Model);
         log.info("### ${table.description}修改成功 ###");
     }
@@ -86,17 +88,16 @@ public class ${table.className}ServiceImpl implements ${table.className}Service 
     * @param id
     */
 	@Override
-	public void delete(${table.primaryKey.javaType} id) {
+	public void delete(${table.primaryKey.javaType} id, String userId, String username) {
 	    ${table.className} ${table.objectName}Model = ${table.objectName}Mapper.selectByPrimaryKey(id);
         if (${table.objectName}Model == null) {
             throw new CustomException(ResultCode.RESULT_DATA_NONE, "${table.description},id=" + id);
         }
 
 		// 逻辑删除
-        ${table.className} ${table.objectName}Model = new ${table.className}();
         ${table.objectName}Model.setId(id);
-        ${table.objectName}Model.setUpdateId(UserUtil.getUserId());
-        ${table.objectName}Model.setUpdateName(UserUtil.getUsername());
+        ${table.objectName}Model.setUpdateId(userId);
+        ${table.objectName}Model.setUpdateName(username);
         ${table.objectName}Model.setUpdateTime(new Timestamp(System.currentTimeMillis()));
         ${table.objectName}Model.setDeleteFlag(Constants.DELETED);
 
@@ -114,9 +115,9 @@ public class ${table.className}ServiceImpl implements ${table.className}Service 
 		if (${table.objectName}Model == null) {
             throw new CustomException(ResultCode.RESULT_DATA_NONE, "${table.description},id=" + id);
         }
-        log.info("### ${table.description}查询成功, ${table.objectName}={}###", JSON.toJSONString(${table.objectName}));
+        log.info("### ${table.description}查询成功, ${table.objectName}={}###", JSON.toJSONString(${table.objectName}Model));
         // model转换vo
-        ${table.className}VO ${table.objectName}VO = new ${table.className}();
+        ${table.className}VO ${table.objectName}VO = new ${table.className}VO();
         BeanUtils.copyProperties(${table.objectName}Model, ${table.objectName}VO);
         log.info("### ${table.description}Model转换VO成功， ${table.objectName}VO={}###", ${table.objectName}VO);
         return ${table.objectName}VO;
@@ -132,7 +133,7 @@ public class ${table.className}ServiceImpl implements ${table.className}Service 
         List<${table.className}> ${table.objectName}List = ${table.objectName}Mapper.selectByPageAndParam(queryConditionVO);
         log.info("### ${table.description}Model模糊查询完毕，总条数：{}条###", ${table.objectName}List.size());
 
-        // ${table.description}Model转换VO数据完毕
+        // ${table.description}Model转换VO数据
         List<${table.className}VO> ${table.objectName}VOList = new ArrayList<>();
         ${table.objectName}List.forEach(${table.objectName} -> {
             ${table.className}VO ${table.objectName}VO = new ${table.className}VO();
@@ -154,8 +155,6 @@ public class ${table.className}ServiceImpl implements ${table.className}Service 
 	@Override
     public QueryResult<${table.className}VO> listByPageAndParams(${table.className}QueryConditionVO queryConditionVO, Integer page, Integer size) {
         // 分页查询
-        page = page == null || page <= 0 ? 1 : page;
-        size = size == null || size <= 0 ? 10 : size;
         PageHelper.startPage(page, size);
         List<${table.className}> ${table.objectName}List = ${table.objectName}Mapper.selectByPageAndParam(queryConditionVO);
         // 获取分页后数据

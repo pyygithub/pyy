@@ -18,43 +18,33 @@
 %>
   </resultMap>
 
+  <sql id="Base_Column_List">
+    <%
+    	for(column in table.columns) {
+            if (columnLP.last) {
+    %>
+      a.${column.name}
+    <%
+            } else {
+    %>
+      a.${column.name},
+    <%
+            }
+    	}
+    %>
+  </sql>
 
 
-  <delete id="delete" parameterType="java.lang.${table.primaryKey.javaType}">
-    delete from ${table.name}
-    where ${table.primaryKey.name} = #{${table.primaryKey.fieldName},jdbcType=${table.primaryKey.jdbcType}}
-  </delete>
-
-  <update id="update" parameterType="${table.modelPackageName}.${table.className}">
-    update ${table.name}
-    <set>
-<%
-	for(column in table.columns) {
-%>
-      <if test="${column.fieldName} != null">
-        ${column.name} = #{${column.fieldName},jdbcType=${column.jdbcType}},
-      </if>
-<%
-	}
-%>
-    </set>
-    where ${table.primaryKey.name} = #{${table.primaryKey.fieldName},jdbcType=${table.primaryKey.jdbcType}}
-  </update>
-
-  <select id="findById" parameterType="java.lang.${table.primaryKey.javaType}" resultMap="BaseResultMap">
-    select * from ${table.name}
-    where ${table.primaryKey.name} = #{${table.primaryKey.fieldName},jdbcType=${table.primaryKey.jdbcType}}
-  </select>
-  
   <select id="selectByPageAndParam" parameterType="${table.voPackageName}.${table.className}QueryConditionVO" resultMap="BaseResultMap">
-    select * from ${table.name} t
+    select
+    <include refid="Base_Column_List"/>
+    from ${table.name} a
     where
-        t.delete_flag = '0'
-        <if test="name != null">
-        <!-- 根据具体业务调整模糊查询条件 -->
-        and t.name like '%'||#{name}||'%'
-        </if>
-    order by t.update_time desc, t.create_time desc
+       a.is_deleted = 0
+       <if test="name != null">
+       <!-- 根据具体业务调整模糊查询条件 -->
+       and a.name like '%'||#{name}||'%'
+       </if>
   </select>
   
 </mapper>

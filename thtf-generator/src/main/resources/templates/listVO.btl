@@ -14,6 +14,7 @@ import lombok.Data;
  * ---------------------------
  */
 @Data
+@ApiModel(value = "${table.className}VO",description = "${table.description}类")
 public class ${table.className}VO {
 
 <%

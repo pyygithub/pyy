@@ -116,13 +116,13 @@ public class ${table.className}Controller {
      */
     @ApiOperation(value = "${table.description}分页查询", notes = "${table.description}分页模糊查询")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "page", value = "当前页码", required = true, dataType = "int", paramType = "query"),
-            @ApiImplicitParam(name = "size", value = "分页尺寸", required = true, dataType = "int", paramType = "query")
+             @ApiImplicitParam(name = "page", value = "当前页码", required = true, dataType = "Integer", paramType = "query"),
+             @ApiImplicitParam(name = "size", value = "分页尺寸", required = true, dataType = "Integer", paramType = "query")
     })
     @GetMapping("/${table.objectName}s/page")
     public Result<QueryResult<${table.className}VO>> listByPageAndParams(${table.className}QueryConditionVO queryConditionVO,
-                                     @RequestParam("page") Integer page,
-                                     @RequestParam("size") Integer size) {
+                                     @RequestParam(value = "page", defaultValue = "1") Integer page,
+                                     @RequestParam(value = "size", defaultValue = "10") Integer size) {
         QueryResult<${table.className}VO> queryResult = ${table.objectName}Service.listByPageAndParams(queryConditionVO, page, size);
         return Result.SUCCESS(queryResult);
     }

@@ -2,6 +2,8 @@ package ${table.modelPackageName};
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.util.Date;
 
@@ -15,6 +17,7 @@ import java.util.Date;
  * ---------------------------
  */
 @Data
+@ApiModel(value = "${table.className}QueryConditionVO",description = "${table.description}查询条件类")
 public class ${table.className}QueryConditionVO {
 
     @ApiModelProperty("名称")

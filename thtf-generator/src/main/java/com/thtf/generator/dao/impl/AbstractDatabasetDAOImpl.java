@@ -212,8 +212,7 @@ public abstract class AbstractDatabasetDAOImpl implements IDatabaseDAO {
 			props.put("user", connParam.getUserName());
 			props.put("password", connParam.getPassword());
 			connection = DriverManager.getConnection(
-					getUrl(connParam.getHost(), connParam.getPort(),
-							connParam.getDbName()), props);
+					getUrl(connParam.getHost(), connParam.getPort(), connParam.getDbName()) + "?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT", props);
 		} catch (ClassNotFoundException e) {
 		    String errorMsg = "连接创建失败，找不到相关驱动类(" + e.getMessage() + ")";
 			throw new DAOException(DAOException.OPEN_CONNECTION_EXCEPTION, errorMsg, e);
